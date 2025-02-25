@@ -6,7 +6,7 @@
 #    By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/25 15:28:19 by asaulnie          #+#    #+#              #
-#    Updated: 2025/02/25 15:45:04 by asaulnie         ###   ########.fr        #
+#    Updated: 2025/02/25 20:21:51 by asaulnie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 INCLUDES = -Iincludes
 
-SRCS = ft_atoi.c philo.c
+SRCS = sources/ft_atoi.c sources/main.c sources/utils.c
 
 OBJS = $(SRCS:.c=.o)
 
