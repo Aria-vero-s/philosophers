@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/06 19:33:39 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/06 20:01:06 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,13 @@ typedef struct s_data {
 
 int		ft_atoi(const char *nptr);
 void	error_exit(char *msg);
+void	*routine(void *arg);
+void	create_philosophers(t_data *data);
+void	join_philosophers(t_data *data);
+void	think(t_philo *philo);
+void	pick_up_forks(t_philo *philo);
+void	eat(t_philo *philo);
+void	put_down_forks(t_philo *philo);
+void	sleep_philosopher(t_philo *philo);
 
 #endif

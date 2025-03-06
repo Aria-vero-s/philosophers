@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:41:58 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/06 19:34:28 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:57:23 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,17 @@
 
 void	*routine(void *arg)
 {
-	t_philo	*philo;
-
+	t_philo *philo;
+	
 	philo = (t_philo *)arg;
-	printf("Philosopher %d is thinking...\n", philo->id);
-	usleep(1000);
-	printf("Philosopher %d is done thinking.\n", philo->id);
-	return (NULL);
+	while (1)
+	{
+		think(philo);
+		pick_up_forks(philo);
+		eat(philo);
+		put_down_forks(philo);
+		sleep_philosopher(philo);
+	}
 }
 
 void	create_philosophers(t_data *data)
@@ -54,7 +58,7 @@ void	join_philosophers(t_data *data)
 	i = 0;
 	while (i < data->n)
 	{
-		pthread_join(data->philo[i].thread, NULL);
+		pthread_join(data->p[i].thread, NULL);
 		i++;
 	}
 }
