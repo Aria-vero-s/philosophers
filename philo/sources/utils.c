@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 20:19:06 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/02/25 20:20:06 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:34:54 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	error_exit(char *msg)
 	int	len;
 
 	len = 0;
-	while(msg[len])
+	while (msg[len])
 		len++;
 	write(2, msg, len);
 	exit(1);

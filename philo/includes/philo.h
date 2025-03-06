@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/02/25 20:16:38 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:33:39 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_philo {
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_t		thread;
-} t_philo;
+}	t_philo;
 
 typedef struct s_data {
 	int				n;
@@ -38,7 +38,7 @@ typedef struct s_data {
 	int				simulation_end;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_mutex;
-	t_philo			*philosophers;
+	t_philo			*p;
 }	t_data;
 
 int		ft_atoi(const char *nptr);

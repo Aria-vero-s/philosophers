@@ -6,62 +6,62 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:41:58 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/02/25 20:20:09 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:34:28 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void *philosopher_routine(void *arg)
+void	*routine(void *arg)
 {
-    t_philo *philo;
-	
+	t_philo	*philo;
+
 	philo = (t_philo *)arg;
-    printf("Philosopher %d is thinking...\n", philo->id);
-    usleep(1000);
-    printf("Philosopher %d is done thinking.\n", philo->id);
-    return (NULL);
+	printf("Philosopher %d is thinking...\n", philo->id);
+	usleep(1000);
+	printf("Philosopher %d is done thinking.\n", philo->id);
+	return (NULL);
 }
 
-void create_philosophers(t_data *data)
+void	create_philosophers(t_data *data)
 {
 	int	i;
 
 	i = 0;
-    data->philosophers = malloc(sizeof(t_philo) * data->n);
-    if (!data->philosophers)
-    {
-        printf("Error: Malloc() failed.\n");
-        return ;
-    }
-    while (i < data->n)
-    {
-        data->philosophers[i].id = i + 1;
-        data->philosophers[i].meals_eaten = 0;
-        if (pthread_create(&data->philosophers[i].thread, NULL, philosopher_routine, &data->philosophers[i]) != 0)
-        {
-            printf("Error: pthread_create() failed for %d.\n", i + 1);
-            return ;
-        }
-		i++;
-    }
-}
-
-void join_philosophers(t_data *data)
-{
-	int	i;
-
-	i = 0;
-    while (i < data->n)
+	data->p = malloc(sizeof(t_philo) * data->n);
+	if (!data->p)
 	{
-        pthread_join(data->philosophers[i].thread, NULL);
+		printf("Error: Malloc() failed.\n");
+		return ;
+	}
+	while (i < data->n)
+	{
+		data->p[i].id = i + 1;
+		data->p[i].meals_eaten = 0;
+		if (pthread_create(&data->p[i].thread, NULL, routine, &data->p[i]) != 0)
+		{
+			printf("Error: pthread_create() failed for %d.\n", i + 1);
+			return ;
+		}
 		i++;
 	}
 }
 
-int main(int argc, char **argv)
+void	join_philosophers(t_data *data)
 {
-	t_data data;
+	int	i;
+
+	i = 0;
+	while (i < data->n)
+	{
+		pthread_join(data->philo[i].thread, NULL);
+		i++;
+	}
+}
+
+int	main(int argc, char **argv)
+{
+	t_data	data;
 
 	if (argc < 5 || argc > 6)
 		error_exit("error: invalid arguments");
@@ -78,6 +78,6 @@ int main(int argc, char **argv)
 	}
 	create_philosophers(&data);
 	join_philosophers(&data);
-	free(data.philosophers);
+	free(data.p);
 	return (0);
 }
