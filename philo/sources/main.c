@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:41:58 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/07 18:55:56 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/07 19:01:03 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,13 @@ void	*routine(void *arg)
 	data = philo_data->data;
 	while (1)
 	{
+		if (data->philo_died == 1)
+			error_exit("");
 		pick_up_forks(philo);
 		eat(philo, data);
 		sleep_philosopher(philo, data);
 		think(philo);
-		if (died(philo, data) == 0)
-			break ;
+		died(philo, data);
 	}
 	return (NULL);
 }
@@ -108,6 +109,7 @@ int	main(int argc, char **argv)
 
 	if (argc < 5 || argc > 6)
 		error_exit("error: invalid arguments");
+	data.philo_died = 0;
 	data.n = ft_atoi(argv[1]);
 	data.time_to_die = ft_atoi(argv[2]);
 	data.time_to_eat = ft_atoi(argv[3]);
