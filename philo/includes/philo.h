@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/06 20:01:06 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/07 18:55:20 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <time.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <sys/time.h>
 
 typedef struct s_philo {
 	int				id;
@@ -39,17 +40,25 @@ typedef struct s_data {
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_mutex;
 	t_philo			*p;
+	int				philo_died;
 }	t_data;
+
+typedef struct s_philo_data {
+	t_philo			*philo;
+	t_data			*data;
+}	t_philo_data;
 
 int		ft_atoi(const char *nptr);
 void	error_exit(char *msg);
 void	*routine(void *arg);
-void	create_philosophers(t_data *data);
+void	init_philosophers(t_data *data);
+void	create_philosophers(t_data *data, t_philo_data *arr);
 void	join_philosophers(t_data *data);
-void	think(t_philo *philo);
 void	pick_up_forks(t_philo *philo);
-void	eat(t_philo *philo);
-void	put_down_forks(t_philo *philo);
-void	sleep_philosopher(t_philo *philo);
+void	eat(t_philo *philo, t_data *data);
+void	sleep_philosopher(t_philo *philo, t_data *data);
+void	think(t_philo *philo);
+int		died(t_philo *philo, t_data *data);
+long	get_current_time(void);
 
 #endif
