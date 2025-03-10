@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ariane <ariane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/07 18:55:20 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/10 15:31:04 by ariane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ typedef struct s_data {
 	pthread_mutex_t	print_mutex;
 	t_philo			*p;
 	int				philo_died;
+	int				finished_count;
+	pthread_mutex_t	finished_mutex;
+	int				all_eaten_printed;
 }	t_data;
 
 typedef struct s_philo_data {
@@ -55,7 +58,7 @@ void	init_philosophers(t_data *data);
 void	create_philosophers(t_data *data, t_philo_data *arr);
 void	join_philosophers(t_data *data);
 void	pick_up_forks(t_philo *philo);
-void	eat(t_philo *philo, t_data *data);
+int		eat(t_philo *philo, t_data *data);
 void	sleep_philosopher(t_philo *philo, t_data *data);
 void	think(t_philo *philo);
 int		died(t_philo *philo, t_data *data);

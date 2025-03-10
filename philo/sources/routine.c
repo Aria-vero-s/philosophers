@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ariane <ariane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:57:02 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/07 18:56:49 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/10 15:46:18 by ariane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,22 @@ void	pick_up_forks(t_philo *philo)
 	printf("%d has taken a fork\n", philo->id);
 }
 
-void	eat(t_philo *philo, t_data *data)
+int	eat(t_philo *philo, t_data *data)
 {
 	philo->last_meal_time = get_current_time();
+	printf("%d is eating\n", philo->id);
 	philo->meals_eaten++;
+	if (philo->meals_eaten == data->n_of_meals)
+	{
+		pthread_mutex_lock(&data->finished_mutex);
+		data->finished_count++;
+		pthread_mutex_unlock(&data->finished_mutex);
+		return (0);
+	}
 	usleep(data->time_to_eat * 1000);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
+	return (1);
 }
 
 void	sleep_philosopher(t_philo *philo, t_data *data)
