@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ariane <ariane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:41:58 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/10 15:45:58 by ariane           ###   ########.fr       */
+/*   Updated: 2025/03/10 19:37:49 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	*routine(void *arg)
 		if (eat(philo, data) == 0)
 		{
 			pthread_mutex_unlock(philo->left_fork);
-            pthread_mutex_unlock(philo->right_fork);
-            break;
+			pthread_mutex_unlock(philo->right_fork);
+			break ;
 		}
 		sleep_philosopher(philo, data);
 		think(philo);
