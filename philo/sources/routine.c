@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ariane <ariane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:57:02 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/10 15:46:18 by ariane           ###   ########.fr       */
+/*   Updated: 2025/03/10 20:30:37 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ int	eat(t_philo *philo, t_data *data)
 		pthread_mutex_lock(&data->finished_mutex);
 		data->finished_count++;
 		pthread_mutex_unlock(&data->finished_mutex);
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
 		return (0);
-	}
+	}	
 	usleep(data->time_to_eat * 1000);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
@@ -54,6 +56,9 @@ int	died(t_philo *philo, t_data *data)
 {
 	if (get_current_time() - philo->last_meal_time > data->time_to_die)
 	{
+		// printf("get_current-time: %ld\n", get_current_time());
+		// printf("philo->last_meal_time: %ld\n", philo->last_meal_time);
+		// printf("data->time_to_die: %ld\n", data->time_to_die);
 		pthread_mutex_lock(&data->print_mutex);
 		printf("Philosopher %d died\n", philo->id);
 		pthread_mutex_unlock(&data->print_mutex);

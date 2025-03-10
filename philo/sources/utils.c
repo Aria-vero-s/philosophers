@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 20:19:06 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/07 18:56:52 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/10 20:35:39 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,18 @@ void	error_exit(char *msg)
 		len++;
 	write(2, msg, len);
 	exit(1);
+}
+
+void	init_data(t_data *data)
+{
+	if (data->n == 1)
+	{
+		printf("1 has taken a fork\n");
+		usleep(data->time_to_die * 1000);
+		printf("Philosopher 1 died\n");
+		error_exit("");
+	}
+	data->philo_died = 0;
+	data->finished_count = 0;
+	data->all_eaten_printed = 0;
 }

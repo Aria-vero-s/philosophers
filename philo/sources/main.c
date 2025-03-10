@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:41:58 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/10 19:37:49 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/10 21:34:39 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	*routine(void *arg)
 
 void	create_philosophers(t_data *data, t_philo_data *arr)
 {
-	int				i;
+	int	i;
 
 	i = 0;
 	while (i < data->n)
@@ -108,9 +108,36 @@ void	join_philosophers(t_data *data)
 	}
 }
 
+// void	*monitor(void *arg)
+// {
+// 	t_data	*data = (t_data *)arg;
+// 	int		i;
+
+// 	while (!data->philo_died)
+// 	{
+// 		i = 0;
+// 		while (i < data->n)
+// 		{
+// 			if (get_current_time() - data->p[i].last_meal_time > data->time_to_die)
+// 			{
+// 				pthread_mutex_lock(&data->print_mutex);
+// 				printf("Philosopher %d died\n", data->p[i].id);
+// 				data->philo_died = 1;
+// 				pthread_mutex_unlock(&data->print_mutex);
+// 				return (NULL);
+// 			}
+// 			i++;
+// 		}
+// 		usleep(1000);
+// 	}
+// 	return (NULL);
+// }
+
+
 int	main(int argc, char **argv)
 {
 	t_data	data;
+	// pthread_t	monitor_thread;
 
 	if (argc < 5 || argc > 6)
 		error_exit("error: invalid arguments\n");
@@ -119,18 +146,19 @@ int	main(int argc, char **argv)
 		error_exit("error: invalid n of philosophers\n");
 	if (pthread_mutex_init(&data.print_mutex, NULL) != 0)
 		error_exit("error: pthread_mutex_init() failed\n");
-	data.philo_died = 0;
+	init_data(&data);
 	data.time_to_die = ft_atoi(argv[2]);
 	data.time_to_eat = ft_atoi(argv[3]);
 	data.time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
 		data.n_of_meals = ft_atoi(argv[5]);
-	data.finished_count = 0;
-	data.all_eaten_printed = 0;
 	if (pthread_mutex_init(&data.finished_mutex, NULL) != 0)
 		error_exit("error: pthread_mutex_init() failed for finished_mutex\n");
+	// if (pthread_create(&monitor_thread, NULL, monitor, &data) != 0)
+	// 	error_exit("Error: pthread_create() failed for monitor\n");
 	init_philosophers(&data);
 	join_philosophers(&data);
+	// pthread_join(monitor_thread, NULL);
 	if (data.finished_count == data.n)
 		printf("All meals eaten\n");
 	free(data.p);

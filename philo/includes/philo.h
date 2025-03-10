@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ariane <ariane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/10 15:31:04 by ariane           ###   ########.fr       */
+/*   Updated: 2025/03/10 20:35:02 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,6 @@ void	sleep_philosopher(t_philo *philo, t_data *data);
 void	think(t_philo *philo);
 int		died(t_philo *philo, t_data *data);
 long	get_current_time(void);
+void	init_data(t_data *data);
 
 #endif
