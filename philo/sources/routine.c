@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:57:02 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/10 20:30:37 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/11 14:33:25 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,22 @@
 
 void	pick_up_forks(t_philo *philo)
 {
-	pthread_mutex_lock(philo->left_fork);
-	pthread_mutex_lock(philo->right_fork);
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_lock(philo->right_fork);
+		pthread_mutex_lock(philo->left_fork);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->left_fork);
+		pthread_mutex_lock(philo->right_fork);
+	}
 	printf("%d has taken a fork\n", philo->id);
 }
 
 int	eat(t_philo *philo, t_data *data)
 {
-	philo->last_meal_time = get_current_time();
+	philo->last_meal = get_current_time();
 	printf("%d is eating\n", philo->id);
 	philo->meals_eaten++;
 	if (philo->meals_eaten == data->n_of_meals)
@@ -54,11 +62,8 @@ void	think(t_philo *philo)
 
 int	died(t_philo *philo, t_data *data)
 {
-	if (get_current_time() - philo->last_meal_time > data->time_to_die)
+	if (get_current_time() - philo->last_meal > data->time_to_die)
 	{
-		// printf("get_current-time: %ld\n", get_current_time());
-		// printf("philo->last_meal_time: %ld\n", philo->last_meal_time);
-		// printf("data->time_to_die: %ld\n", data->time_to_die);
 		pthread_mutex_lock(&data->print_mutex);
 		printf("Philosopher %d died\n", philo->id);
 		pthread_mutex_unlock(&data->print_mutex);
