@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/12 17:37:21 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/12 19:55:25 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,23 +50,17 @@ typedef struct s_data {
 	int				terminate;
 }	t_data;
 
-typedef struct s_philo_data {
-	t_philo			*philo;
-	t_data			*data;
-}	t_philo_data;
-
 // ft_atoi.c
 int		ft_atoi(const char *nptr);
 
 // init_philo.c
 void	thread_init(t_data *data);
 void	assign_philosopher_data(t_philo *philo, int id, t_data *data);
-void	memory_error_handle(t_data *data, t_philo_data *arg, const char *msg);
+void	memory_error_handle(t_data *data, const char *msg);
 void	create_philosophers(t_data *data);
 void	init_philosophers(t_data *data);
 
 // init.c
-void	var(void *arg, t_philo_data **d_data, t_philo **philo, t_data **data);
 void	init_last_meals(t_data *data);
 void	one_philo_only(t_data *data);
 void	setup(int argc, char **argv, t_data *data, pthread_t *monitor_thread);

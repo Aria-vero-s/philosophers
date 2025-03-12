@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:57:02 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/12 17:45:33 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/12 19:55:09 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 void	*routine(void *arg)
 {
-	t_philo_data	*philo_data;
 	t_philo			*philo;
 	t_data			*data;
 
-	var(arg, &philo_data, &philo, &data);
-	free(philo_data);
-	philo->data = data;
+	philo = (t_philo *)arg;
+	data = philo->data;
 	if (philo->id % 2 == 0)
 		usleep(1000);
 	while (1)

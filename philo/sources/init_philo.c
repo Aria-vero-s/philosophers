@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:41:58 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/12 17:25:13 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/12 19:54:41 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ void	assign_philosopher_data(t_philo *philo, int id, t_data *data)
 	philo->last_meal = get_current_time();
 	philo->left_fork = &data->forks[id];
 	philo->right_fork = &data->forks[(id + 1) % data->n];
+	philo->data = data;
 }
 
-void	memory_error_handle(t_data *data, t_philo_data *arg, const char *msg)
+void	memory_error_handle(t_data *data, const char *msg)
 {
 	pthread_mutex_lock(&data->print_mutex);
 	printf("%s\n", msg);
@@ -46,33 +47,22 @@ void	memory_error_handle(t_data *data, t_philo_data *arg, const char *msg)
 	pthread_mutex_lock(&data->term_mutex);
 	data->terminate = 1;
 	pthread_mutex_unlock(&data->term_mutex);
-	if (arg)
-		free(arg);
 }
 
 void	create_philosophers(t_data *data)
 {
 	int				i;
-	t_philo_data	*arg;
 
 	i = 0;
 	thread_init(data);
 	while (i < data->n)
 	{
 		assign_philosopher_data(&data->p[i], i, data);
-		arg = malloc(sizeof(t_philo_data));
-		if (!arg)
+		if (pthread_create(&data->p[i].thread, NULL, routine, &data->p[i]) != 0)
 		{
-			memory_error_handle(data, NULL, "Error: malloc() fail for p data.");
+			memory_error_handle(data, "Error: pthread_create() failed.");
 			return ;
-		}
-		arg->philo = &data->p[i];
-		arg->data = data;
-		if (pthread_create(&data->p[i].thread, NULL, routine, arg) != 0)
-		{
-			memory_error_handle(data, arg, "Error: pthread_create() failed.");
-			return ;
-		}
+		}		
 		i++;
 	}
 }
