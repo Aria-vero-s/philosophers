@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/12 16:29:39 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:50:21 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	init_philosophers(t_data *data);
 // init.c
 void	philosopher_actions(t_philo *philo, t_data *data);
 void	init_last_meals(t_data *data);
-void	init_data(t_data *data);
+void	one_philo_only(t_data *data);
 void	setup(int argc, char **argv, t_data *data, pthread_t *monitor_thread);
 
 // monitor.c

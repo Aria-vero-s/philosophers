@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:44:45 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/12 16:16:40 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:50:21 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	init_last_meals(t_data *data)
 	}
 }
 
-void	init_data(t_data *data)
+void	one_philo_only(t_data *data)
 {
 	if (data->n == 1)
 	{
@@ -71,7 +71,7 @@ void	setup(int argc, char **argv, t_data *data, pthread_t *monitor_thread)
 	if (pthread_mutex_init(&data->term_mutex, NULL) != 0)
 		error_exit("error: pthread_mutex_init() failed for term_mutex\n", data);
 	data->terminate = 0;
-	init_data(data);
+	one_philo_only(data);
 	init_philosophers(data);
 	data->start_time = get_current_time();
 	init_last_meals(data);
