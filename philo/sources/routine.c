@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:57:02 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/12 17:36:57 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/12 17:45:33 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	pick_up_forks(t_philo *philo)
 		pthread_mutex_lock(philo->left_fork);
 		pthread_mutex_lock(philo->right_fork);
 	}
-	safe_print(philo->data, "has taken forks", philo->id, 0);
+	safe_print(philo->data, "has taken a fork", philo->id, 0);
 }
 
 int	eat(t_philo *philo, t_data *data)

@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:44:45 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/12 17:37:36 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/12 17:55:06 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void	one_philo_only(t_data *data)
 	if (data->n == 1)
 	{
 		pthread_mutex_lock(&data->print_mutex);
-		printf("Philosopher 1 has taken a fork\n");
+		printf("1 has taken a fork\n");
 		pthread_mutex_unlock(&data->print_mutex);
 		usleep(data->time_to_die * 1000);
 		pthread_mutex_lock(&data->print_mutex);
-		printf("Philosopher 1 died\n");
+		printf("1 died\n");
 		pthread_mutex_unlock(&data->print_mutex);
 		error_exit("", data);
 	}
