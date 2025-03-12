@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:34:19 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/11 14:37:44 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:13:11 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ void	check_all_finished(t_data *data)
 	if (data->finished_count == data->n)
 	{
 		pthread_mutex_unlock(&data->finished_mutex);
-		pthread_exit(NULL);
+		pthread_mutex_lock(&data->term_mutex);
+		data->terminate = 1;
+		pthread_mutex_unlock(&data->term_mutex);
+		return ;
 	}
 	pthread_mutex_unlock(&data->finished_mutex);
 }
@@ -32,14 +35,14 @@ void	check_philosopher_death(t_data *data)
 	{
 		if (get_current_time() - data->p[i].last_meal > data->time_to_die)
 		{
-			pthread_mutex_lock(&data->print_mutex);
-			if (!data->philo_died)
+			if (!data->terminate)
 			{
-				printf("Philosopher %d died\n", data->p[i].id);
-				data->philo_died = 1;
+				safe_print(data, "died", data->p[i].id, 1);
+				pthread_mutex_lock(&data->term_mutex);
+				data->terminate = 1;
+				pthread_mutex_unlock(&data->term_mutex);
 			}
-			pthread_mutex_unlock(&data->print_mutex);
-			exit(1);
+			return ;
 		}
 		i++;
 	}
@@ -52,6 +55,13 @@ void	*monitor(void *arg)
 	data = (t_data *)arg;
 	while (1)
 	{
+		pthread_mutex_lock(&data->term_mutex);
+		if (data->terminate)
+		{
+			pthread_mutex_unlock(&data->term_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&data->term_mutex);
 		check_all_finished(data);
 		check_philosopher_death(data);
 		usleep(1000);

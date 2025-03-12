@@ -6,11 +6,37 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:57:02 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/11 14:33:25 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:16:03 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	*routine(void *arg)
+{
+	t_philo_data	*philo_data;
+	t_philo			*philo;
+	t_data			*data;
+
+	philo_data = (t_philo_data *)arg;
+	philo = philo_data->philo;
+	data = philo_data->data;
+	free(philo_data);
+	philo->data = data;
+	if (philo->id % 2 == 0)
+		usleep(1000);
+	while (1)
+	{
+		pthread_mutex_lock(&data->term_mutex);
+		if (data->terminate)
+		{
+			pthread_mutex_unlock(&data->term_mutex);
+			break ;
+		}
+		philosopher_actions(philo, data);
+	}
+	return (NULL);
+}
 
 void	pick_up_forks(t_philo *philo)
 {
@@ -24,15 +50,15 @@ void	pick_up_forks(t_philo *philo)
 		pthread_mutex_lock(philo->left_fork);
 		pthread_mutex_lock(philo->right_fork);
 	}
-	printf("%d has taken a fork\n", philo->id);
+	safe_print(philo->data, "has taken forks", philo->id, 0);
 }
 
 int	eat(t_philo *philo, t_data *data)
 {
 	philo->last_meal = get_current_time();
-	printf("%d is eating\n", philo->id);
+	safe_print(philo->data, "is eating", philo->id, 0);
 	philo->meals_eaten++;
-	if (philo->meals_eaten == data->n_of_meals)
+	if (data->n_of_meals != -1 && philo->meals_eaten >= data->n_of_meals)
 	{
 		pthread_mutex_lock(&data->finished_mutex);
 		data->finished_count++;
@@ -49,26 +75,12 @@ int	eat(t_philo *philo, t_data *data)
 
 void	sleep_philosopher(t_philo *philo, t_data *data)
 {
+	safe_print(philo->data, "is sleeping", philo->id, 0);
 	usleep(data->time_to_sleep * 1000);
-	printf("%d is sleeping\n", philo->id);
-	usleep(1000);
 }
 
 void	think(t_philo *philo)
 {
-	printf("%d is thinking\n", philo->id);
+	safe_print(philo->data, "is thinking", philo->id, 0);
 	usleep(1000);
-}
-
-int	died(t_philo *philo, t_data *data)
-{
-	if (get_current_time() - philo->last_meal > data->time_to_die)
-	{
-		pthread_mutex_lock(&data->print_mutex);
-		printf("Philosopher %d died\n", philo->id);
-		pthread_mutex_unlock(&data->print_mutex);
-		data->philo_died = 1;
-		return (0);
-	}
-	return (1);
 }
