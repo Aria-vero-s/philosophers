@@ -6,20 +6,17 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:44:45 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/12 16:50:21 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/12 17:37:36 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	philosopher_actions(t_philo *philo, t_data *data)
+void	var(void *arg, t_philo_data **d_data, t_philo **philo, t_data **data)
 {
-	pthread_mutex_unlock(&data->term_mutex);
-	pick_up_forks(philo);
-	if (!eat(philo, data))
-		return ;
-	sleep_philosopher(philo, data);
-	think(philo);
+	*d_data = (t_philo_data *)arg;
+	*philo = (*d_data)->philo;
+	*data = (*d_data)->data;
 }
 
 void	init_last_meals(t_data *data)

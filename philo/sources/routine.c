@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:57:02 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/12 16:16:03 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/12 17:36:57 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ void	*routine(void *arg)
 	t_philo			*philo;
 	t_data			*data;
 
-	philo_data = (t_philo_data *)arg;
-	philo = philo_data->philo;
-	data = philo_data->data;
+	var(arg, &philo_data, &philo, &data);
 	free(philo_data);
 	philo->data = data;
 	if (philo->id % 2 == 0)
@@ -33,7 +31,12 @@ void	*routine(void *arg)
 			pthread_mutex_unlock(&data->term_mutex);
 			break ;
 		}
-		philosopher_actions(philo, data);
+		pthread_mutex_unlock(&data->term_mutex);
+		pick_up_forks(philo);
+		if (!eat(philo, data))
+			break ;
+		sleep_philosopher(philo, data);
+		think(philo);
 	}
 	return (NULL);
 }

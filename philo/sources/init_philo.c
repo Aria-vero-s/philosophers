@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:41:58 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/12 16:23:13 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/12 17:25:13 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ void	create_philosophers(t_data *data)
 	int				i;
 	t_philo_data	*arg;
 
-	thread_init(data);
 	i = 0;
+	thread_init(data);
 	while (i < data->n)
 	{
 		assign_philosopher_data(&data->p[i], i, data);
