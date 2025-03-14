@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:34:19 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/12 19:50:08 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/14 21:25:21 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	*monitor(void *arg)
 		}
 		pthread_mutex_unlock(&data->term_mutex);
 		check_all_finished(data);
-		check_philosopher_death(data);
+		if (!data->terminate)
+			check_philosopher_death(data);
 		usleep(1000);
 	}
 	return (NULL);

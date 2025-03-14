@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:44:45 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/14 14:45:01 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/14 21:35:43 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,16 @@ void	create_philosophers(t_data *data)
 		data->p[i].left_fork = &data->forks[i];
 		data->p[i].right_fork = &data->forks[(i + 1) % data->n];
 		data->p[i].data = data;
-		if (pthread_create(&data->p[i].thread, NULL, routine, &data->p[i]) != 0)
-		{
-			pthread_mutex_lock(&data->print_mutex);
-			printf("Error: pthread_create() failed\n");
-			pthread_mutex_unlock(&data->print_mutex);
-			pthread_mutex_lock(&data->term_mutex);
-			data->terminate = 1;
-			pthread_mutex_unlock(&data->term_mutex);
-			return ;
-		}
+		// if (pthread_create(&data->p[i].thread, NULL, routine, &data->p[i]) != 0)
+		// {
+		// 	pthread_mutex_lock(&data->print_mutex);
+		// 	printf("Error: pthread_create() failed\n");
+		// 	pthread_mutex_unlock(&data->print_mutex);
+		// 	pthread_mutex_lock(&data->term_mutex);
+		// 	data->terminate = 1;
+		// 	pthread_mutex_unlock(&data->term_mutex);
+		// 	return ;
+		// }
 		i++;
 	}
 }
@@ -103,9 +103,25 @@ void	setup(int argc, char **argv, t_data *data, pthread_t *monitor_thread)
 		error_exit("Error: pthread_mutex_init() failed for term_mutex\n", data);
 	data->terminate = 0;
 	one_philo_only(data);
-	init_philosophers(data);
-	data->start_time = get_current_time();
-	init_last_meals(data);
-	if (pthread_create(monitor_thread, NULL, monitor, data) != 0)
+	init_philosophers(data); // ca demarre Ils comencent a manger ! 
+	data->start_time = get_current_time(); // mais la on dit que la simulation commence
+	init_last_meals(data); // la on remet leur debut de repas a 0
+	if (pthread_create(monitor_thread, NULL, monitor, data) != 0) // et finalement on commence que maintenant a surveiller
 		error_exit("Error: pthread_create() failed for monitor\n", data);
+	int i = -1;
+	while (data->n)
+	{
+		if (pthread_create(&data->p[i].thread, NULL, routine, &data->p[i]) != 0)
+		{
+			pthread_mutex_lock(&data->print_mutex);
+			printf("Error: pthread_create() failed\n");
+			pthread_mutex_unlock(&data->print_mutex);
+			pthread_mutex_lock(&data->term_mutex);
+			data->terminate = 1;
+			pthread_mutex_unlock(&data->term_mutex);
+			return ;
+		}
+		i++;
+	}
+
 }

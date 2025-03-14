@@ -6,14 +6,14 @@
 #    By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/25 15:28:19 by asaulnie          #+#    #+#              #
-#    Updated: 2025/03/14 14:03:09 by asaulnie         ###   ########.fr        #
+#    Updated: 2025/03/14 20:03:08 by asaulnie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3
 
 INCLUDES = -Iincludes
 
