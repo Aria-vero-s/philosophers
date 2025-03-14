@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 20:19:06 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/12 17:37:33 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/14 13:52:48 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	cleanup_simulation(t_data *data, pthread_t monitor_thread)
 
 void	safe_print(t_data *data, const char *msg, int philo_id, int force)
 {
+	long	timestamp;
+
 	pthread_mutex_lock(&data->term_mutex);
 	if (!force && data->terminate)
 	{
@@ -78,9 +80,10 @@ void	safe_print(t_data *data, const char *msg, int philo_id, int force)
 	}
 	pthread_mutex_unlock(&data->term_mutex);
 	pthread_mutex_lock(&data->print_mutex);
+	timestamp = get_current_time() - data->start_time;
 	if (philo_id > 0)
-		printf("%d %s\n", philo_id, msg);
+		printf("%ld %d %s\n", timestamp, philo_id, msg);
 	else
-		printf("%s\n", msg);
+		printf("%ld %s\n", timestamp, msg);
 	pthread_mutex_unlock(&data->print_mutex);
 }

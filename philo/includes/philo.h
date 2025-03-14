@@ -6,13 +6,14 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/12 20:06:16 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:08:29 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include <limits.h>
 # include <stdio.h>
 # include <pthread.h>
 # include <time.h>
@@ -52,6 +53,11 @@ typedef struct s_data {
 
 // ft_atoi.c
 int		ft_atoi(const char *nptr);
+
+// parsing.c
+void	parsing(int argc, char **argv);
+int		is_valid_number(char *str);
+void	error_msg(char *msg);
 
 // special_case.c
 void	one_philo_only(t_data *data);
