@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:34:19 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/15 15:12:56 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/15 20:32:22 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	check_philosopher_death(t_data *data)
 		{
 			if (simulation_active(data))
 			{
-				safe_print(data, "died", data->p[i].id, 1);
 				set_simulation_finished(data);
+				safe_print(data, "died", data->p[i].id, 1);
 			}
 			return ;
 		}
@@ -59,12 +59,22 @@ void	*monitor(void *arg)
 	t_data	*data;
 
 	data = (t_data *)arg;
-	while (simulation_active(data))
+	if (data->n_of_meals)
 	{
-		check_all_finished(data);
-		if (simulation_active(data))
-			check_philosopher_death(data);
-		usleep(1000);
+		while (simulation_active(data))
+		{
+			check_all_finished(data);
+			if (simulation_active(data))
+				check_philosopher_death(data);
+		}
+	}
+	else
+	{
+		while (simulation_active(data))
+		{
+			if (simulation_active(data))
+				check_philosopher_death(data);
+		}
 	}
 	return (NULL);
 }

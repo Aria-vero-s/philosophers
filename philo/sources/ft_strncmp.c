@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   special_case.c                                     :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/25 15:41:58 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/15 20:58:20 by asaulnie         ###   ########.fr       */
+/*   Created: 2024/05/27 10:30:26 by asaulnie          #+#    #+#             */
+/*   Updated: 2025/03/15 18:30:24 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	one_philo_only(t_data *data)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	if (data->n != 1)
+	size_t	i;
+
+	i = 0;
+	if (n == 0)
 		return (0);
-	else
+	while (i < n && (s1[i] || s2[i]))
 	{
-		data->start_time = get_current_time();
-		pthread_mutex_lock(&data->forks[0]);
-		safe_print(data, "has taken a fork", 1, 0);
-		usleep(data->time_to_die * 1000);
-		safe_print(data, "died", 1, 0);
-		pthread_mutex_unlock(&data->forks[0]);
-		return (error_exit("", data));
+		if ((unsigned char)s1[i] != (unsigned char)s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
 	}
+	return (0);
 }

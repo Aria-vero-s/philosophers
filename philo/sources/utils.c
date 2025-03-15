@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 20:19:06 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/15 15:25:32 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/15 20:36:47 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,10 @@ void	cleanup_simulation(t_data *data)
 	}
 	free(data->p);
 	free(data->forks);
+}
+
+void	unlock_forks(t_philo *philo)
+{
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
 }

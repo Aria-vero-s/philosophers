@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 14:49:43 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/15 15:39:50 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/15 20:31:18 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,14 @@ void	safe_print(t_data *data, const char *msg, int philo_id, int force)
 	int		active;
 	long	timestamp;
 
-	pthread_mutex_lock(&data->term_mutex);
 	active = !data->simulation_finished;
-	pthread_mutex_unlock(&data->term_mutex);
 	if (!force && !active)
 		return ;
-	pthread_mutex_lock(&data->print_mutex);
 	timestamp = get_current_time() - data->start_time;
-	if (philo_id > 0)
+	if (!ft_strncmp(msg, "died", 4))
 		printf("%ld %d %s\n", timestamp, philo_id, msg);
-	else
-		printf("%ld %s\n", timestamp, msg);
-	pthread_mutex_unlock(&data->print_mutex);
+	else if (active)
+		printf("%ld %d %s\n", timestamp, philo_id, msg);
 }
 
 void	set_simulation_finished(t_data *data)

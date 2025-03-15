@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 14:01:12 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/15 14:23:44 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/15 20:37:59 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,26 @@ int	error_msg(char *msg)
 
 int	is_valid_number(char *str)
 {
-	int	i;
+	long	num;
+	int		sign;
 
-	i = 0;
-	if (!str[i])
-		return (0);
-	if (str[i] == '+')
-		i++;
-	while (str[i])
+	num = 0;
+	sign = 1;
+	if (*str == '-' || *str == '+')
 	{
-		if (!(str[i] >= '0' && str[i] <= '9'))
+		if (*str == '-')
 			return (0);
-		i++;
+	}
+	if (*str == '\0')
+		return (0);
+	while (*str)
+	{
+		if (*str < '0' || *str > '9')
+			return (0);
+		num = num * 10 + (*str - '0');
+		if ((num * sign) > INT_MAX || (num * sign) < INT_MIN)
+			return (0);
+		str++;
 	}
 	return (1);
 }
@@ -47,10 +55,8 @@ int	parsing(int argc, char **argv)
 	while (i < argc)
 	{
 		if (!is_valid_number(argv[i]))
-			return (error_msg("Argument must be a positive int"));
+			return (error_msg("Argument invalid"));
 		value = ft_atoi(argv[i]);
-		if (value > INT_MAX)
-			return (error_msg("Argument is bigger than INT_MAX"));
 		if (value == 0)
 			return (error_msg("Argument cannot be zero"));
 		i++;

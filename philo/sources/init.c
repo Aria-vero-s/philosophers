@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:44:45 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/15 15:38:11 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/15 20:30:20 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,9 @@ int	init_simulation(int argc, char **argv, t_data *data)
 	while (i < data->n)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-			safe_print(data, "Error: fork malloc failed", 0, 1);
+			safe_print(data, "Error: fork init failed", 0, 1);
 		i++;
 	}
-	one_philo_only(data);
 	init_philosophers(data);
 	return (0);
 }

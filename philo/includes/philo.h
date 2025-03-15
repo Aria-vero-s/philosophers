@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/15 15:29:35 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/15 20:35:52 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@ struct s_data {
 // ft_atoi.c
 int		ft_atoi(const char *nptr);
 
+// ft_strncmp.c
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+
 // parsing.c
 int		error_msg(char *msg);
 int		is_valid_number(char *str);
@@ -75,15 +78,16 @@ int		simulation_active(t_data *data);
 void	*monitor(void *arg);
 
 // routine.c
-void	pick_up_forks(t_philo *philo);
+int		pick_up_forks(t_philo *philo);
 int		eat(t_philo *philo);
-void	sleep_philosopher(t_philo *philo);
-void	think(t_philo *philo);
+int		sleep_philosopher(t_philo *philo);
+int		think(t_philo *philo);
 void	*routine(void *arg);
 
 // utils.c
 int		error_exit(const char *msg, t_data *data);
 void	cleanup_simulation(t_data *data);
+void	unlock_forks(t_philo *philo);
 
 // simuation.c
 long	get_current_time(void);
