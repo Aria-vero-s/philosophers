@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:45:44 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/14 14:00:59 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:33:32 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 int	main(int argc, char **argv)
 {
-	t_data		data;
-	pthread_t	monitor_thread;
+	t_data	data;
 
-	data.p = NULL;
-	data.forks = NULL;
-	parsing(argc, argv);
-	setup(argc, argv, &data, &monitor_thread);
-	cleanup_simulation(&data, monitor_thread);
+	if (parsing(argc, argv) == 1)
+		return (-1);
+	if (init_simulation(argc, argv, &data) == 1)
+		return (-1);
+	if (run_simulation(&data) == 1)
+		return (-1);
+	cleanup_simulation(&data);
 	return (0);
 }

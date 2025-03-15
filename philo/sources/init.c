@@ -6,122 +6,75 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:44:45 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/14 21:35:43 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:38:11 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	init_last_meals(t_data *data)
+int	arguments_to_data(int argc, char **argv, t_data *data)
 {
-	int	i;
-
-	i = 0;
-	while (i < data->n)
-	{
-		data->p[i].last_meal = data->start_time;
-		i++;
-	}
+	data->n = atoi(argv[1]);
+	if (data->n <= 0)
+		return (error_exit("Error\n", data));
+	data->time_to_die = atoi(argv[2]);
+	data->time_to_eat = atoi(argv[3]);
+	data->time_to_sleep = atoi(argv[4]);
+	if (argc == 6)
+		data->n_of_meals = atoi(argv[5]);
+	else
+		data->n_of_meals = -1;
+	data->finished_count = 0;
+	data->simulation_finished = 0;
+	return (0);
 }
 
-void	thread_init(t_data *data)
+int	init_mutexes(t_data *data)
 {
-	int	i;
-
-	i = 0;
-	while (i < data->n)
-	{
-		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-		{
-			pthread_mutex_lock(&data->print_mutex);
-			printf("Error: pthread_mutex_init() failed for fork %d.\n", i);
-			pthread_mutex_unlock(&data->print_mutex);
-		}
-		i++;
-	}
-}
-
-void	create_philosophers(t_data *data)
-{
-	int				i;
-
-	i = 0;
-	thread_init(data);
-	while (i < data->n)
-	{
-		data->p[i].id = i + 1;
-		data->p[i].meals_eaten = 0;
-		data->p[i].last_meal = get_current_time();
-		data->p[i].left_fork = &data->forks[i];
-		data->p[i].right_fork = &data->forks[(i + 1) % data->n];
-		data->p[i].data = data;
-		// if (pthread_create(&data->p[i].thread, NULL, routine, &data->p[i]) != 0)
-		// {
-		// 	pthread_mutex_lock(&data->print_mutex);
-		// 	printf("Error: pthread_create() failed\n");
-		// 	pthread_mutex_unlock(&data->print_mutex);
-		// 	pthread_mutex_lock(&data->term_mutex);
-		// 	data->terminate = 1;
-		// 	pthread_mutex_unlock(&data->term_mutex);
-		// 	return ;
-		// }
-		i++;
-	}
+	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
+		return (error_exit("Error: init failed for print_mutex\n", data));
+	if (pthread_mutex_init(&data->finished_mutex, NULL) != 0)
+		return (error_exit("Error: init failed for finished_mutex\n", data));
+	if (pthread_mutex_init(&data->term_mutex, NULL) != 0)
+		return (error_exit("Error: init failed for term_mutex\n", data));
+	return (0);
 }
 
 void	init_philosophers(t_data *data)
 {
-	data->p = malloc(sizeof(t_philo) * data->n);
-	if (!data->p)
-		error_exit("Error: malloc() failed for philosophers.\n", data);
-	data->forks = malloc(sizeof(pthread_mutex_t) * data->n);
-	if (!data->forks)
-	{
-		free(data->p);
-		error_exit("Error: malloc() failed for forks.\n", data);
-	}
-	create_philosophers(data);
-}
+	int	i;
 
-void	setup(int argc, char **argv, t_data *data, pthread_t *monitor_thread)
-{
-	data->n = ft_atoi(argv[1]);
-	if (data->n <= 0)
-		error_exit("Error: invalid n of philosophers\n", data);
-	data->time_to_die = ft_atoi(argv[2]);
-	data->time_to_eat = ft_atoi(argv[3]);
-	data->time_to_sleep = ft_atoi(argv[4]);
-	if (argc == 6)
-		data->n_of_meals = ft_atoi(argv[5]);
-	else
-		data->n_of_meals = -1;
-	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
-		error_exit("Error: pthread_mutex_init() failed\n", data);
-	if (pthread_mutex_init(&data->finished_mutex, NULL) != 0)
-		error_exit("Error: pthread_mutex_init() failed\n", data);
-	if (pthread_mutex_init(&data->term_mutex, NULL) != 0)
-		error_exit("Error: pthread_mutex_init() failed for term_mutex\n", data);
-	data->terminate = 0;
-	one_philo_only(data);
-	init_philosophers(data); // ca demarre Ils comencent a manger ! 
-	data->start_time = get_current_time(); // mais la on dit que la simulation commence
-	init_last_meals(data); // la on remet leur debut de repas a 0
-	if (pthread_create(monitor_thread, NULL, monitor, data) != 0) // et finalement on commence que maintenant a surveiller
-		error_exit("Error: pthread_create() failed for monitor\n", data);
-	int i = -1;
-	while (data->n)
+	i = 0;
+	while (i < data->n)
 	{
-		if (pthread_create(&data->p[i].thread, NULL, routine, &data->p[i]) != 0)
-		{
-			pthread_mutex_lock(&data->print_mutex);
-			printf("Error: pthread_create() failed\n");
-			pthread_mutex_unlock(&data->print_mutex);
-			pthread_mutex_lock(&data->term_mutex);
-			data->terminate = 1;
-			pthread_mutex_unlock(&data->term_mutex);
-			return ;
-		}
+		data->p[i].id = i + 1;
+		data->p[i].meals_eaten = 0;
+		data->p[i].last_meal = 0;
+		data->p[i].left_fork = &data->forks[i];
+		data->p[i].right_fork = &data->forks[(i + 1) % data->n];
+		data->p[i].data = data;
 		i++;
 	}
+}
 
+int	init_simulation(int argc, char **argv, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	arguments_to_data(argc, argv, data);
+	init_mutexes(data);
+	data->p = malloc(sizeof(t_philo) * data->n);
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->n);
+	if (!data->p || !data->forks)
+		return (error_exit("Error: philo malloc failed\n", data));
+	while (i < data->n)
+	{
+		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
+			safe_print(data, "Error: fork malloc failed", 0, 1);
+		i++;
+	}
+	one_philo_only(data);
+	init_philosophers(data);
+	return (0);
 }

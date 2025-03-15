@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/14 14:08:29 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:29:35 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,71 +21,74 @@
 # include <unistd.h>
 # include <sys/time.h>
 
-typedef struct s_philo	t_philo;
-
 typedef struct s_data	t_data;
 
-typedef struct s_philo {
+typedef struct s_philo	t_philo;
+
+struct s_philo {
 	int				id;
 	int				meals_eaten;
 	long			last_meal;
+	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	pthread_t		thread;
 	t_data			*data;
-}	t_philo;
+};
 
-typedef struct s_data {
+struct s_data {
 	int				n;
-	long			time_to_die;
-	long			time_to_eat;
-	long			time_to_sleep;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
 	int				n_of_meals;
-	long			start_time;
 	int				finished_count;
+	int				simulation_finished;
+	long			start_time;
+	t_philo			*p;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	finished_mutex;
 	pthread_mutex_t	term_mutex;
-	t_philo			*p;
-	int				terminate;
-}	t_data;
+};
 
 // ft_atoi.c
 int		ft_atoi(const char *nptr);
 
 // parsing.c
-void	parsing(int argc, char **argv);
+int		error_msg(char *msg);
 int		is_valid_number(char *str);
-void	error_msg(char *msg);
+int		parsing(int argc, char **argv);
 
 // special_case.c
-void	one_philo_only(t_data *data);
+int		one_philo_only(t_data *data);
 
 // init.c
-void	init_last_meals(t_data *data);
-void	thread_init(t_data *data);
-void	create_philosophers(t_data *data);
+int		arguments_to_data(int argc, char **argv, t_data *data);
+int		init_mutexes(t_data *data);
 void	init_philosophers(t_data *data);
-void	setup(int argc, char **argv, t_data *data, pthread_t *monitor_thread);
+int		init_simulation(int argc, char **argv, t_data *data);
 
 // monitor.c
 void	check_all_finished(t_data *data);
 void	check_philosopher_death(t_data *data);
+int		simulation_active(t_data *data);
 void	*monitor(void *arg);
 
 // routine.c
-void	*routine(void *arg);
 void	pick_up_forks(t_philo *philo);
-int		eat(t_philo *philo, t_data *data);
-void	sleep_philosopher(t_philo *philo, t_data *data);
+int		eat(t_philo *philo);
+void	sleep_philosopher(t_philo *philo);
 void	think(t_philo *philo);
+void	*routine(void *arg);
 
 // utils.c
+int		error_exit(const char *msg, t_data *data);
+void	cleanup_simulation(t_data *data);
+
+// simuation.c
 long	get_current_time(void);
-void	error_exit(char *msg, t_data *data);
-void	join_philosophers(t_data *data);
-void	cleanup_simulation(t_data *data, pthread_t monitor_thread);
 void	safe_print(t_data *data, const char *msg, int philo_id, int force);
+void	set_simulation_finished(t_data *data);
+int		run_simulation(t_data *data);
 
 #endif
