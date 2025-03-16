@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:34:19 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/15 20:32:22 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/16 16:57:31 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ int	simulation_active(t_data *data)
 	int	active;
 
 	pthread_mutex_lock(&data->term_mutex);
-	active = !data->simulation_finished;
+	if (data->simulation_finished == 0)
+		active = 1;
+	else
+		active = 0;
 	pthread_mutex_unlock(&data->term_mutex);
 	return (active);
 }
