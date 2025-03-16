@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/15 20:35:52 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/16 22:12:18 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,10 @@ struct s_data {
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	finished_mutex;
 	pthread_mutex_t	term_mutex;
+	int				print_mutex_init;
+	int				finished_mutex_init;
+	int				term_mutex_init;
+	int				fork_mutexes_initialized;
 };
 
 // ft_atoi.c
@@ -66,9 +70,10 @@ int		parsing(int argc, char **argv);
 int		one_philo_only(t_data *data);
 
 // init.c
+void	init_data(t_data *data);
 int		arguments_to_data(int argc, char **argv, t_data *data);
-int		init_mutexes(t_data *data);
 void	init_philosophers(t_data *data);
+int		init_mutexes(t_data *data);
 int		init_simulation(int argc, char **argv, t_data *data);
 
 // monitor.c
