@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/16 22:12:18 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/16 22:22:54 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int		is_valid_number(char *str);
 int		parsing(int argc, char **argv);
 
 // special_case.c
+void	*one_philo_routine(void *arg);
 int		one_philo_only(t_data *data);
 
 // init.c
