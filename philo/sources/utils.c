@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 20:19:06 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/16 22:14:00 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/17 20:55:11 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,13 @@ int	error_exit(const char *msg, t_data *data)
 		len++;
 	if (msg && len > 0)
 		write(2, msg, len);
-	cleanup_simulation(data);
+	if (data)
+	{
+		if (data->p)
+			free(data->p);
+		if (data->forks)
+			free(data->forks);
+	}
 	return (-1);
 }
 
@@ -36,21 +42,19 @@ void	cleanup_simulation(t_data *data)
 		printf("All meals eaten\n");
 		pthread_mutex_unlock(&data->print_mutex);
 	}
-	if (data->print_mutex_init)
+	if (data->print_mutex_init == 1)
 		pthread_mutex_destroy(&data->print_mutex);
-	if (data->finished_mutex_init)
+	if (data->finished_mutex_init == 1)
 		pthread_mutex_destroy(&data->finished_mutex);
-	if (data->term_mutex_init)
+	if (data->term_mutex_init == 1)
 		pthread_mutex_destroy(&data->term_mutex);
 	while (i < data->fork_mutexes_initialized)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
 		i++;
 	}
-	if (data->forks)
-		free(data->forks);
-	if (data->p)
-		free(data->p);
+	free(data->p);
+	free(data->forks);
 }
 
 void	unlock_forks(t_philo *philo)

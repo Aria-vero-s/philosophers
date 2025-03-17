@@ -6,7 +6,7 @@
 #    By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/25 15:28:19 by asaulnie          #+#    #+#              #
-#    Updated: 2025/03/17 13:41:13 by asaulnie         ###   ########.fr        #
+#    Updated: 2025/03/16 17:39:04 by asaulnie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,25 +17,20 @@ CFLAGS = -Wall -Wextra -Werror
 
 INCLUDES = -Iincludes
 
-SRCDIR = sources
-OBJDIR = obj
-
-SRCS = ft_atoi.c ft_strncmp.c simulation.c parsing.c special_case.c utils.c routine.c monitor.c main.c init.c
+SRCS = sources/ft_atoi.c sources/ft_strncmp.c sources/simulation.c sources/parsing.c sources/special_case.c sources/utils.c sources/routine.c sources/monitor.c sources/main.c sources/init.c
 
 OBJS = $(SRCS:.c=.o)
-OBJS := $(addprefix $(OBJDIR)/, $(OBJS))
 
 all: $(NAME)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
-	mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
-
 clean:
-	rm -rf $(OBJDIR)
+	rm -f $(OBJS)
 
 fclean: clean
 	rm -f $(NAME)
