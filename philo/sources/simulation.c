@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 14:49:43 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/15 20:31:18 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:21:36 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	safe_print(t_data *data, const char *msg, int philo_id, int force)
 	int		active;
 	long	timestamp;
 
-	active = !data->simulation_finished;
+	active = simulation_active(data);
 	if (!force && !active)
 		return ;
 	timestamp = get_current_time() - data->start_time;

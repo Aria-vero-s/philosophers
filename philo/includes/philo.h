@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/17 20:55:21 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:40:04 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ struct s_philo {
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	t_data			*data;
+	pthread_mutex_t meal_mutex;
 };
 
 struct s_data {
@@ -53,6 +54,7 @@ struct s_data {
 	int				finished_mutex_init;
 	int				term_mutex_init;
 	int				fork_mutexes_initialized;
+	int				meal_mutexes_initialized;
 };
 
 // ft_atoi.c

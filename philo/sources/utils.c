@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 20:19:06 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/17 20:55:11 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:41:03 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,7 @@ int	error_exit(const char *msg, t_data *data)
 		len++;
 	if (msg && len > 0)
 		write(2, msg, len);
-	if (data)
-	{
-		if (data->p)
-			free(data->p);
-		if (data->forks)
-			free(data->forks);
-	}
+	cleanup_simulation(data);
 	return (-1);
 }
 
@@ -53,8 +47,15 @@ void	cleanup_simulation(t_data *data)
 		pthread_mutex_destroy(&data->forks[i]);
 		i++;
 	}
-	free(data->p);
-	free(data->forks);
+	while (i < data->meal_mutexes_initialized)
+	{
+		pthread_mutex_destroy(&data->p[i].meal_mutex);
+		i++;
+	}
+	if (data->p)
+		free(data->p);
+	if (data->forks)
+		free(data->forks);
 }
 
 void	unlock_forks(t_philo *philo)

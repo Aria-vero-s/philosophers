@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:57:02 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/15 20:37:08 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:22:41 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ int	eat(t_philo *philo)
 	t_data	*data;
 
 	data = philo->data;
+	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal = get_current_time();
+	pthread_mutex_unlock(&philo->meal_mutex);
 	if (data->simulation_finished)
 	{
 		unlock_forks(philo);

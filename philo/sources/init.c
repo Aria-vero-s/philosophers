@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:44:45 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/17 21:08:30 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:41:28 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	init_mutexes(t_data *data)
 	data->finished_mutex_init = 0;
 	data->term_mutex_init = 0;
 	data->fork_mutexes_initialized = 0;
+	data->meal_mutexes_initialized = 0;
 	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
 		return (error_exit("Error: init failed for print_mutex\n", data));
 	data->print_mutex_init = 1;
@@ -60,6 +61,12 @@ void	init_philosophers(t_data *data)
 		data->p[i].left_fork = &data->forks[i];
 		data->p[i].right_fork = &data->forks[(i + 1) % data->n];
 		data->p[i].data = data;
+		if (pthread_mutex_init(&data->p[i].meal_mutex, NULL) != 0)
+		{
+			data->meal_mutexes_initialized = i;
+			error_exit("Error: init failed for meal_mutex\n", data);
+		}
+		data->meal_mutexes_initialized++;
 		i++;
 	}
 }
@@ -69,10 +76,10 @@ int	init_simulation(int argc, char **argv, t_data *data)
 	int	i;
 
 	i = 0;
-	arguments_to_data(argc, argv, data);
-	init_mutexes(data);
 	data->p = NULL;
 	data->forks = NULL;
+	arguments_to_data(argc, argv, data);
+	init_mutexes(data);
 	data->p = malloc(sizeof(t_philo) * data->n);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->n);
 	if (!data->p || !data->forks)
@@ -81,7 +88,6 @@ int	init_simulation(int argc, char **argv, t_data *data)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
 		{
-			safe_print(data, "Error: fork init failed", 0, 1);
 			data->fork_mutexes_initialized = i;
 			return (error_exit("Error: fork init failed\n", data));
 		}
