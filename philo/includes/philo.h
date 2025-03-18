@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/18 18:01:38 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:54:43 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int		error_msg(char *msg);
 int		parsing(const char *str, int *result);
 
 // special_case.c
+void	*single_philo_routine(void *arg);
 int		one_philo_only(t_data *data);
 
 // init.c
