@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 20:19:06 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/18 16:41:03 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:01:03 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,12 @@ void	cleanup_simulation(t_data *data)
 		pthread_mutex_destroy(&data->finished_mutex);
 	if (data->term_mutex_init == 1)
 		pthread_mutex_destroy(&data->term_mutex);
-	while (i < data->fork_mutexes_initialized)
-	{
+	i = -1;
+	while (++i < data->fork_mutexes_initialized)
 		pthread_mutex_destroy(&data->forks[i]);
-		i++;
-	}
-	while (i < data->meal_mutexes_initialized)
-	{
+	i = -1;
+	while (++i < data->meal_mutexes_initialized)
 		pthread_mutex_destroy(&data->p[i].meal_mutex);
-		i++;
-	}
 	if (data->p)
 		free(data->p);
 	if (data->forks)
@@ -62,4 +58,14 @@ void	unlock_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
+}
+
+void	eat_helper(t_philo *philo)
+{
+	t_data	*data;
+
+	data = philo->data;
+	pthread_mutex_lock(&data->print_mutex);
+	safe_print(data, "is eating", philo->id, 0);
+	pthread_mutex_unlock(&data->print_mutex);
 }

@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/18 16:40:04 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:01:38 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ struct s_philo {
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	t_data			*data;
-	pthread_mutex_t meal_mutex;
+	pthread_mutex_t	meal_mutex;
 };
 
 struct s_data {
@@ -65,8 +65,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // parsing.c
 int		error_msg(char *msg);
-int		is_valid_number(char *str);
-int		parsing(int argc, char **argv);
+int		parsing(const char *str, int *result);
 
 // special_case.c
 int		one_philo_only(t_data *data);
@@ -94,6 +93,7 @@ void	*routine(void *arg);
 int		error_exit(const char *msg, t_data *data);
 void	cleanup_simulation(t_data *data);
 void	unlock_forks(t_philo *philo);
+void	eat_helper(t_philo *philo);
 
 // simuation.c
 long	get_current_time(void);

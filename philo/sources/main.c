@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:45:44 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/16 17:29:35 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:37:08 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ int	main(int argc, char **argv)
 {
 	t_data	data;
 
-	if (parsing(argc, argv) != 0)
-		return (-1);
 	if (init_simulation(argc, argv, &data) != 0)
 		return (-1);
 	if (one_philo_only(&data))

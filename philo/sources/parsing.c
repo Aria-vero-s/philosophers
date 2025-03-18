@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 14:01:12 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/15 20:37:59 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:20:35 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,48 +18,25 @@ int	error_msg(char *msg)
 	return (1);
 }
 
-int	is_valid_number(char *str)
-{
-	long	num;
-	int		sign;
-
-	num = 0;
-	sign = 1;
-	if (*str == '-' || *str == '+')
-	{
-		if (*str == '-')
-			return (0);
-	}
-	if (*str == '\0')
-		return (0);
-	while (*str)
-	{
-		if (*str < '0' || *str > '9')
-			return (0);
-		num = num * 10 + (*str - '0');
-		if ((num * sign) > INT_MAX || (num * sign) < INT_MIN)
-			return (0);
-		str++;
-	}
-	return (1);
-}
-
-int	parsing(int argc, char **argv)
+int	parsing(const char *str, int *result)
 {
 	int		i;
 	long	value;
 
-	i = 1;
-	if (argc < 5 || argc > 6)
-		return (error_msg("Invalid number of arguments"));
-	while (i < argc)
+	i = 0;
+	if (!str || !*str)
+		return (error_msg("Argument invalid"));
+	if (str[i] == '+')
+		i++;
+	while (str[i])
 	{
-		if (!is_valid_number(argv[i]))
-			return (error_msg("Argument invalid"));
-		value = ft_atoi(argv[i]);
-		if (value == 0)
-			return (error_msg("Argument cannot be zero"));
+		if (str[i] < '0' || str[i] > '9')
+			return (error_msg("Argument must be positive int"));
 		i++;
 	}
+	value = ft_atoi(str);
+	if (value <= 0)
+		return (error_msg("Argument must be positive and non-zero"));
+	*result = (int)value;
 	return (0);
 }

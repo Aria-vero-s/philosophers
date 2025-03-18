@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:34:19 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/18 16:27:51 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:46:08 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	check_all_finished(t_data *data)
 
 void	check_philosopher_death(t_data *data)
 {
-	int	i;
-	long last_meal;
+	int		i;
+	long	last_meal;
 
 	i = 0;
 	while (i < data->n)
@@ -35,7 +35,6 @@ void	check_philosopher_death(t_data *data)
 		pthread_mutex_lock(&data->p[i].meal_mutex);
 		last_meal = data->p[i].last_meal;
 		pthread_mutex_unlock(&data->p[i].meal_mutex);
-		
 		if (get_current_time() - last_meal > data->time_to_die)
 		{
 			if (simulation_active(data))

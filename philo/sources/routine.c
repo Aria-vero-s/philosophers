@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:57:02 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/18 16:22:41 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:03:03 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,7 @@ int	eat(t_philo *philo)
 		unlock_forks(philo);
 		return (0);
 	}
-	pthread_mutex_lock(&data->print_mutex);
-	safe_print(data, "is eating", philo->id, 0);
-	pthread_mutex_unlock(&data->print_mutex);
+	eat_helper(philo);
 	philo->meals_eaten++;
 	if (data->n_of_meals != -1 && philo->meals_eaten >= data->n_of_meals)
 	{

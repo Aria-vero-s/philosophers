@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:44:45 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/18 16:41:28 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:19:34 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,21 @@
 
 int	arguments_to_data(int argc, char **argv, t_data *data)
 {
-	data->n = atoi(argv[1]);
-	if (data->n <= 0)
-		return (error_exit("Error\n", data));
-	data->time_to_die = atoi(argv[2]);
-	data->time_to_eat = atoi(argv[3]);
-	data->time_to_sleep = atoi(argv[4]);
+	if (argc < 5 || argc > 6)
+		return (error_msg("Must be: <philo> <die> <eat> <sleep> <opt: meals>"));
+	if (parsing(argv[1], &data->n))
+		return (1);
+	if (parsing(argv[2], &data->time_to_die))
+		return (1);
+	if (parsing(argv[3], &data->time_to_eat))
+		return (1);
+	if (parsing(argv[4], &data->time_to_sleep))
+		return (1);
 	if (argc == 6)
-		data->n_of_meals = atoi(argv[5]);
+	{
+		if (parsing(argv[5], &data->n_of_meals))
+			return (1);
+	}
 	else
 		data->n_of_meals = -1;
 	data->finished_count = 0;
@@ -78,7 +85,8 @@ int	init_simulation(int argc, char **argv, t_data *data)
 	i = 0;
 	data->p = NULL;
 	data->forks = NULL;
-	arguments_to_data(argc, argv, data);
+	if (arguments_to_data(argc, argv, data) != 0)
+		return (-1);
 	init_mutexes(data);
 	data->p = malloc(sizeof(t_philo) * data->n);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->n);
