@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:34:19 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/18 17:46:08 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:27:34 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	*monitor(void *arg)
 	{
 		while (simulation_active(data))
 		{
+			usleep(1);
 			check_all_finished(data);
 			if (simulation_active(data))
 				check_philosopher_death(data);
@@ -79,6 +80,7 @@ void	*monitor(void *arg)
 	{
 		while (simulation_active(data))
 		{
+			usleep(1);
 			if (simulation_active(data))
 				check_philosopher_death(data);
 		}

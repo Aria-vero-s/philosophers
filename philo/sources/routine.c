@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:57:02 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/24 16:24:32 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:29:44 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ int	eat(t_philo *philo)
 
 int	sleep_philosopher(t_philo *philo)
 {
-	if (philo->data->simulation_finished)
-		return (1);
+	if (!simulation_active(philo->data))
+    	return (1);
 	pthread_mutex_lock(&philo->data->print_mutex);
 	safe_print(philo->data, "is sleeping", philo->id, 0);
 	pthread_mutex_unlock(&philo->data->print_mutex);
@@ -80,8 +80,8 @@ int	sleep_philosopher(t_philo *philo)
 
 int	think(t_philo *philo)
 {
-	if (philo->data->simulation_finished)
-		return (1);
+	if (!simulation_active(philo->data))
+    	return (1);
 	pthread_mutex_lock(&philo->data->print_mutex);
 	safe_print(philo->data, "is thinking", philo->id, 0);
 	pthread_mutex_unlock(&philo->data->print_mutex);
