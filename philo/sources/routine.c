@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:57:02 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/18 18:03:03 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:24:32 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,25 @@ int	pick_up_forks(t_philo *philo)
 	t_data	*data;
 
 	data = philo->data;
-	pthread_mutex_lock(philo->right_fork);
-	pthread_mutex_lock(philo->left_fork);
-	if (!data->simulation_finished)
+	if (philo->id % 2 == 0)
 	{
-		pthread_mutex_lock(&philo->data->print_mutex);
-		safe_print(philo->data, "has taken a fork", philo->id, 0);
-		pthread_mutex_unlock(&philo->data->print_mutex);
-		return (0);
+		pthread_mutex_lock(philo->right_fork);
+		pthread_mutex_lock(philo->left_fork);
 	}
 	else
 	{
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_lock(philo->left_fork);
+		pthread_mutex_lock(philo->right_fork);
 	}
+	if (!data->simulation_finished)
+	{
+		pthread_mutex_lock(&data->print_mutex);
+		safe_print(data, "has taken a fork", philo->id, 0);
+		pthread_mutex_unlock(&data->print_mutex);
+		return (0);
+	}
+	else
+		unlock_forks(philo);
 	return (1);
 }
 
