@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ariane <ariane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:57:02 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/24 16:29:44 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:40:41 by ariane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	pick_up_forks(t_philo *philo)
 		pthread_mutex_lock(philo->left_fork);
 		pthread_mutex_lock(philo->right_fork);
 	}
-	if (!data->simulation_finished)
+	if (simulation_active(data))
 	{
 		pthread_mutex_lock(&data->print_mutex);
 		safe_print(data, "has taken a fork", philo->id, 0);

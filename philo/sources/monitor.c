@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ariane <ariane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:34:19 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/24 16:27:34 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:43:00 by ariane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	*monitor(void *arg)
 	{
 		while (simulation_active(data))
 		{
-			usleep(1);
 			check_all_finished(data);
 			if (simulation_active(data))
 				check_philosopher_death(data);
@@ -80,7 +79,6 @@ void	*monitor(void *arg)
 	{
 		while (simulation_active(data))
 		{
-			usleep(1);
 			if (simulation_active(data))
 				check_philosopher_death(data);
 		}
