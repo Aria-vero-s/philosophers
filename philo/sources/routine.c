@@ -6,7 +6,7 @@
 /*   By: ariane <ariane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:57:02 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/26 14:40:41 by ariane           ###   ########.fr       */
+/*   Updated: 2025/03/26 14:51:36 by ariane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ int	sleep_philosopher(t_philo *philo)
 
 int	think(t_philo *philo)
 {
-	if (!simulation_active(philo->data))
-    	return (1);
+	if (simulation_active(philo->data) == 0)
+		return (1);
 	pthread_mutex_lock(&philo->data->print_mutex);
 	safe_print(philo->data, "is thinking", philo->id, 0);
 	pthread_mutex_unlock(&philo->data->print_mutex);
@@ -97,7 +97,7 @@ void	*routine(void *arg)
 	data = philo->data;
 	if (philo->id % 2 == 0)
 		usleep(1000);
-	while (simulation_active(data))
+	while (simulation_active(data) != 0)
 	{
 		if (pick_up_forks(philo))
 			break ;

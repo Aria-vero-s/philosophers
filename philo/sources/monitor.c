@@ -6,7 +6,7 @@
 /*   By: ariane <ariane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:34:19 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/26 14:43:00 by ariane           ###   ########.fr       */
+/*   Updated: 2025/03/26 14:48:09 by ariane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,13 @@ void	*monitor(void *arg)
 		while (simulation_active(data))
 		{
 			check_all_finished(data);
-			if (simulation_active(data))
-				check_philosopher_death(data);
+			check_philosopher_death(data);
 		}
 	}
 	else
 	{
 		while (simulation_active(data))
-		{
-			if (simulation_active(data))
-				check_philosopher_death(data);
-		}
+			check_philosopher_death(data);
 	}
 	return (NULL);
 }
