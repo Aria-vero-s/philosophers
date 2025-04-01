@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ariane <ariane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:34:19 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/26 14:48:09 by ariane           ###   ########.fr       */
+/*   Updated: 2025/04/01 13:12:28 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	check_philosopher_death(t_data *data)
 		pthread_mutex_unlock(&data->p[i].meal_mutex);
 		if (get_current_time() - last_meal > data->time_to_die)
 		{
-			if (simulation_active(data))
+			if (simulation_active(data) != 0)
 			{
 				set_simulation_finished(data);
 				safe_print(data, "died", data->p[i].id, 1);
@@ -68,7 +68,7 @@ void	*monitor(void *arg)
 	data = (t_data *)arg;
 	if (data->n_of_meals)
 	{
-		while (simulation_active(data))
+		while (simulation_active(data) != 0)
 		{
 			check_all_finished(data);
 			check_philosopher_death(data);
@@ -76,7 +76,7 @@ void	*monitor(void *arg)
 	}
 	else
 	{
-		while (simulation_active(data))
+		while (simulation_active(data) != 0)
 			check_philosopher_death(data);
 	}
 	return (NULL);

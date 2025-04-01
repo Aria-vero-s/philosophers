@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ariane <ariane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:57:02 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/26 14:51:36 by ariane           ###   ########.fr       */
+/*   Updated: 2025/04/01 14:27:23 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	pick_up_forks(t_philo *philo)
 		pthread_mutex_lock(philo->left_fork);
 		pthread_mutex_lock(philo->right_fork);
 	}
-	if (simulation_active(data))
+	if (simulation_active(data) != 0)
 	{
 		pthread_mutex_lock(&data->print_mutex);
 		safe_print(data, "has taken a fork", philo->id, 0);
@@ -69,8 +69,8 @@ int	eat(t_philo *philo)
 
 int	sleep_philosopher(t_philo *philo)
 {
-	if (!simulation_active(philo->data))
-    	return (1);
+	if (simulation_active(philo->data) == 0)
+		return (1);
 	pthread_mutex_lock(&philo->data->print_mutex);
 	safe_print(philo->data, "is sleeping", philo->id, 0);
 	pthread_mutex_unlock(&philo->data->print_mutex);
@@ -99,11 +99,11 @@ void	*routine(void *arg)
 		usleep(1000);
 	while (simulation_active(data) != 0)
 	{
-		if (pick_up_forks(philo))
+		if (pick_up_forks(philo) != 0)
 			break ;
-		if (!eat(philo))
+		if (eat(philo) != 0)
 			break ;
-		if (sleep_philosopher(philo))
+		if (sleep_philosopher(philo) != 0)
 			break ;
 		think(philo);
 	}
