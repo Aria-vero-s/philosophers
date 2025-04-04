@@ -6,7 +6,7 @@
 /*   By: asaulnie <asaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:28:50 by asaulnie          #+#    #+#             */
-/*   Updated: 2025/03/18 18:54:43 by asaulnie         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:53:31 by asaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,46 +57,29 @@ struct s_data {
 	int				meal_mutexes_initialized;
 };
 
-// ft_atoi.c
 int		ft_atoi(const char *nptr);
-
-// ft_strncmp.c
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-
-// parsing.c
 int		error_msg(char *msg);
 int		parsing(const char *str, int *result);
-
-// special_case.c
 void	*single_philo_routine(void *arg);
 int		one_philo_only(t_data *data);
-
-// init.c
 int		arguments_to_data(int argc, char **argv, t_data *data);
 int		init_mutexes(t_data *data);
 void	init_philosophers(t_data *data);
 int		init_simulation(int argc, char **argv, t_data *data);
-
-// monitor.c
 void	check_all_finished(t_data *data);
 void	check_philosopher_death(t_data *data);
 int		simulation_active(t_data *data);
 void	*monitor(void *arg);
-
-// routine.c
 int		pick_up_forks(t_philo *philo);
 int		eat(t_philo *philo);
 int		sleep_philosopher(t_philo *philo);
 int		think(t_philo *philo);
 void	*routine(void *arg);
-
-// utils.c
 int		error_exit(const char *msg, t_data *data);
 void	cleanup_simulation(t_data *data);
 void	unlock_forks(t_philo *philo);
 void	eat_helper(t_philo *philo);
-
-// simuation.c
 long	get_current_time(void);
 void	safe_print(t_data *data, const char *msg, int philo_id, int force);
 void	set_simulation_finished(t_data *data);
